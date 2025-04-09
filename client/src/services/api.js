@@ -1,10 +1,11 @@
 import axios from 'axios';
 
-// Use the Railway backend URL in production or default to localhost for development
-const API_URL = process.env.REACT_APP_API_URL || 'https://web-production-aceaa.up.railway.app/api';
+// TEMPORARY: Railway backend has MongoDB connection issues
+// Once the backend's MongoDB URI is properly configured, switch back to the Railway URL
+// const API_URL = process.env.REACT_APP_API_URL || 'https://web-production-aceaa.up.railway.app/api';
 
-// For local development, uncomment this line and comment the one above
-// const API_URL = 'http://localhost:5001/api';
+// Using local development URL until backend MongoDB connection is fixed
+const API_URL = 'http://localhost:5001/api';
 
 const api = axios.create({
   baseURL: API_URL,
