@@ -20,6 +20,11 @@ app.get('/', (req, res) => {
   res.send('Job Tracker API is running...');
 });
 
+// Add a health check endpoint for Railway
+app.get('/api/health', (req, res) => {
+  res.status(200).json({ status: 'ok', message: 'Server is running' });
+});
+
 // MongoDB Connection
 mongoose.connect(process.env.MONGODB_URI)
   .then(() => {
