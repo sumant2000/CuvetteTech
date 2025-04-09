@@ -3,6 +3,8 @@ const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
 const morgan = require('morgan');
+const swaggerJsdoc = require('swagger-jsdoc');
+const swaggerUi = require('swagger-ui-express');
 const jobRoutes = require('./routes/jobs');
 
 const app = express();
@@ -13,16 +15,51 @@ app.use(cors());
 app.use(express.json());
 app.use(morgan('dev'));
 
+// Swagger configuration
+const swaggerOptions = {
+  definition: {
+    openapi: '3.0.0',
+    info: {
+      title: 'Job Tracker API',
+      version: '1.0.0',
+      description: 'API documentation for the Job Tracker application',
+      contact: {
+        name: 'Sumant Khapre',
+        url: 'https://github.com/sumant2000/CuvetteTech'
+      }
+    },
+    servers: [
+      {
+        url: 'https://web-production-aceaa.up.railway.app/api',
+        description: 'Production server'
+      },
+      {
+        url: 'http://localhost:5001/api',
+        description: 'Local development server'
+      }
+    ]
+  },
+  apis: ['./routes/*.js', './models/*.js'] // Path to the API routes and models
+};
+
+const swaggerSpec = swaggerJsdoc(swaggerOptions);
+app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+app.use('/api-docs.json', (req, res) => {
+  res.setHeader('Content-Type', 'application/json');
+  res.send(swaggerSpec);
+});
+
 // Routes
 app.use('/api/jobs', jobRoutes);
-
-app.get('/', (req, res) => {
-  res.send('Job Tracker API is running...');
-});
 
 // Add a health check endpoint for Railway
 app.get('/api/health', (req, res) => {
   res.status(200).json({ status: 'ok', message: 'Server is running' });
+});
+
+// Root route redirects to API docs
+app.get('/', (req, res) => {
+  res.redirect('/docs');
 });
 
 // MongoDB Connection
