@@ -1,0 +1,71 @@
+// jobAppSolutions.js
+
+/**
+ * HOW TO RUN:
+ * 1. Save this file as `jobAppSolutions.js`
+ * 2. Run in terminal using: node jobAppSolutions.js
+ */
+
+// ----------------------
+// Common Job Application Data
+// ----------------------
+
+const jobApplications = [
+    { company: "Google", role: "SDE Intern", appliedDate: "2025-04-01", status: "Applied" },
+    { company: "Amazon", role: "Backend Engineer", appliedDate: "2025-03-29", status: "Interview" },
+    { company: "Microsoft", role: "AI Research Intern", appliedDate: "2025-04-05", status: "Rejected" },
+    { company: "Meta", role: "Frontend Developer", appliedDate: "2025-04-02", status: "Applied" },
+    { company: "Apple", role: "SDE Intern", appliedDate: "2025-03-28", status: "Offer" },
+    { company: "Tesla", role: "Backend Engineer", appliedDate: "2025-04-03", status: "Interview" },
+    { company: "Google", role: "sde intern", appliedDate: "2025-04-04", status: "Rejected" }, // duplicate
+    { company: "Netflix", role: "AI Research Intern", appliedDate: "2025-04-06", status: "Applied" },
+    { company: "Spotify", role: "Frontend Developer", appliedDate: "2025-03-30", status: "Rejected" },
+    { company: "Adobe", role: "Backend Engineer", appliedDate: "2025-04-01", status: "Applied" }
+  ];
+  
+  // ----------------------
+  // Problem 1: Sort by appliedDate (Latest First)
+  // ----------------------
+  
+  function sortJobsByDate(jobs) {
+    return [...jobs].sort((a, b) => new Date(b.appliedDate) - new Date(a.appliedDate));
+  }
+  
+  // ----------------------
+  // Problem 2: Status Frequency Counter
+  // ----------------------
+  
+  function countJobStatuses(jobs) {
+    return jobs.reduce((acc, job) => {
+      const status = job.status;
+      acc[status] = (acc[status] || 0) + 1;
+      return acc;
+    }, {});
+  }
+  
+  // ----------------------
+  // Problem 3: Detect Duplicate Applications (company + role)
+  // ----------------------
+  
+  function hasDuplicateApplications(jobs) {
+    const seen = new Set();
+    for (const job of jobs) {
+      const key = `${job.company.toLowerCase()}-${job.role.toLowerCase()}`;
+      if (seen.has(key)) return true;
+      seen.add(key);
+    }
+    return false;
+  }
+  
+  // ----------------------
+  // Output Section
+  // ----------------------
+  
+  console.log("📌 Sorted Job Applications by Date:");
+  console.log(sortJobsByDate(jobApplications));
+  
+  console.log("\n📊 Status Frequency:");
+  console.log(countJobStatuses(jobApplications));
+  
+  console.log("\n❗ Has Duplicates (company + role):");
+  console.log(hasDuplicateApplications(jobApplications));
